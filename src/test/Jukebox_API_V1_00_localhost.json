@@ -1,0 +1,819 @@
+{
+    "variable": [
+    {
+        "id": "0861d79a-cc6b-4068-9be1-899be6d2a509",
+        "key": "protocol",
+        "value": "http",
+        "type": "string"
+    },
+    {
+        "id": "6a359d38-a37a-4d28-ae6e-0504ef8eee50",
+        "key": "host",
+        "value": "localhost:9000",
+        "type": "string"
+    }
+    ],
+    "info": {
+        "name": "Jukebox_API_V1_00_localhost",
+        "_postman_id": "060fe4d4-aa71-61f2-91d2-84841e66ffca",
+        "description": "",
+        "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "ping",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/ping",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"ping"
+                    ],
+                    "query": [
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "create test channel",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/test/model/channel/insert",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "test",
+                        "model",
+			"channel",
+			"insert"
+                    ],
+                    "query": [
+                        {
+			    "key"   : "chan_id",
+			    "value" : "c1111111-1111-1111-1111-111111111111" ,
+			    "equals": true,
+			    "description": ""
+                        },
+                        {
+			    "key"   : "chan_type",
+			    "value" : "POC_chan_type" ,
+			    "equals": true,
+			    "description": ""
+                        },
+                        {
+			    "key"   : "chan_name",
+			    "value" : "POC_chan_name" ,
+			    "equals": true,
+			    "description": ""
+                        },
+                        {
+			    "key"   : "chan_description",
+			    "value" : "POC_chan_description" ,
+			    "equals": true,
+			    "description": ""
+                        },
+                        {
+			    "key"   : "chan_status",
+			    "value" : "Y" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "create test room",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/test/model/room/insert",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "test",
+                        "model",
+			"room",
+			"insert"
+                    ],
+                    "query": [
+                        {
+			    "key"   : "room_id",
+			    "value" : "c1111111-1111-1111-1111-111111111111" ,
+			    "equals": true,
+			    "description": ""
+                        },
+                        {
+			    "key"   : "room_channel_id",
+			    "value" : "c1111111-1111-1111-1111-111111111111" ,
+			    "equals": true,
+			    "description": ""
+                        },
+                        {
+			    "key"   : "room_name",
+			    "value" : "Moe's Room" ,
+			    "equals": true,
+			    "description": ""
+                        },
+                        {
+			    "key"   : "room_status",
+			    "value" : "Y" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "start-broadcast",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/start-broadcast",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"start-broadcast"
+                    ],
+                    "query": [
+                        {
+"key": "params",
+"value": "{ \"title\": \"Eeny-Meeny-Miny-Moe\",\"profileId\": \"1e062b9e-6a32-4f6d-96c4-88a939ead816\", \"roomId\": \"c1111111-1111-1111-1111-111111111111\", \"participantList\": [{\"id\":\"c05050af-d760-4b9c-b0ed-b9c74d18626f\", \"name\":\"Eeny\", \"deviceType\": \"WEBRTC\",\"partType\": \"GUEST\" },{\"id\":\"747f4442-9edf-4dfd-96d3-c48894362dc9\", \"name\":\"Meeny\", \"deviceType\": \"WEBRTC\",\"partType\": \"GUEST\"},{\"id\":\"5d162bcf-148d-4ab3-a343-820fb6bf4ae1\", \"name\":\"Miny\", \"deviceType\": \"WEBRTC\",\"partType\": \"GUEST\"},{\"id\":\"1e062b9e-6a32-4f6d-96c4-88a939ead816\", \"name\":\"Moe\", \"deviceType\": \"RTSP-A\",\"partType\": \"HOST\" } ]}" ,
+"equals": true,
+"description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "end-broadcast",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/end-broadcast",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"end-broadcast"
+                    ],
+                    "query": [
+                        {
+			    "key": "profileId",
+			    "value": "1e062b9e-6a32-4f6d-96c4-88a939ead816" ,
+			    "equals": true,
+			    "description": "Moe's profileId"
+                        },
+                        {
+			    "key": "broadcastId",
+			    "value": "" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "DELETE",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "join-broadcast",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/join-broadcast",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"join-broadcast"
+                    ],
+                    "query": [
+                        {
+			    "key": "profileId",
+			    "value": "c05050af-d760-4b9c-b0ed-b9c74d18626f" ,
+			    "equals": true,
+			    "description": "Eeny"
+                        },
+                        {
+			    "key": "broadcastId",
+			    "value": "" ,
+			    "equals": true,
+			    "description": "change this to actual bcast_id"
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "leave-broadcast",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/leave-broadcast",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"leave-broadcast"
+                    ],
+                    "query": [
+                        {
+			    "key": "profileId",
+			    "value": "c05050af-d760-4b9c-b0ed-b9c74d18626f" ,
+			    "equals": true,
+			    "description": "Eeny"
+                        },
+                        {
+			    "key": "broadcastId",
+			    "value": "" ,
+			    "equals": true,
+			    "description": "change this to actual bcast_id"
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "DELETE",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "get-broadcast-status",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/get-broadcast-status",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"get-broadcast-status"
+                    ],
+                    "query": [
+                        {
+			    "key": "profileId",
+			    "value": "c05050af-d760-4b9c-b0ed-b9c74d18626f" ,
+			    "equals": true,
+			    "description": "Eeny"
+                        },
+                        {
+			    "key": "broadcastId",
+			    "value": "" ,
+			    "equals": true,
+			    "description": "change this to actual bcast_id"
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "get-broadcast-list",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/get-broadcast-list",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"get-broadcast-list"
+                    ],
+                    "query": [
+                        {
+			    "key": "profileId",
+			    "value": "" ,
+			    "equals": true,
+			    "description": "Enter profileId"
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "start-recording",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/start-recording",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"start-recording"
+                    ],
+                    "query": [
+                        {
+			    "key": "broadcastId",
+			    "value": "" ,
+			    "equals": true,
+			    "description": "Enter broadcastId"
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "stop-recording",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/stop-recording",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"stop-recording"
+                    ],
+                    "query": [
+                        {
+			    "key": "broadcastId",
+			    "value": "" ,
+			    "equals": true,
+			    "description": "Enter broadcastId"
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "play-broadcast",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/play-broadcast",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"play-broadcast"
+                    ],
+                    "query": [
+                        {
+			    "key": "params",
+			    "value": "{\"deviceType\" : \"Android\", \"profileId\" : \"profileId-1\", \"channelId\" : \"channelId-1\"}" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "show-media",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/show-media",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"show-media"
+                    ],
+                    "query": [
+                        {
+			    "key": "params",
+			    "value": "{\"deviceType\" : \"Android\", \"profileId\" : \"profileId-1\", \"channelId\" : \"channelId-1\"}" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "hide-media",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/hide-media",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"hide-media"
+                    ],
+                    "query": [
+                        {
+			    "key": "params",
+			    "value": "{\"deviceType\" : \"Android\", \"profileId\" : \"profileId-1\", \"channelId\" : \"channelId-1\"}" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "view-broadcast",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/view-broadcast",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"view-broadcast"
+                    ],
+                    "query": [
+                        {
+			    "key": "params",
+			    "value": "{\"deviceType\" : \"Android\", \"profileId\" : \"profileId-1\", \"channelId\" : \"channelId-1\"}" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "end-view-broadcast",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/end-view-broadcast",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"end-view-broadcast"
+                    ],
+                    "query": [
+                        {
+			    "key": "params",
+			    "value": "{\"deviceType\" : \"Android\", \"profileId\" : \"profileId-1\", \"channelId\" : \"channelId-1\"}" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "start-talking",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/api/v1/sapien-talk/start-talking",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+			"sapien-talk",
+			"start-talking"
+                    ],
+                    "query": [
+                        {
+			    "key": "params",
+			    "value": "{\"deviceType\" : \"Android\", \"profileId\" : \"profileId-1\", \"channelId\" : \"channelId-1\"}" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "POST",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "get Eeny profile",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/test/model/profiles/find",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "test",
+                        "model",
+			"profiles",
+			"find"
+                    ],
+                    "query": [
+                        {
+			    "key"   : "prof_id",
+			    "value" : "c05050af-d760-4b9c-b0ed-b9c74d18626f" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "get Meeny profile",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/test/model/profiles/find",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "test",
+                        "model",
+			"profiles",
+			"find"
+                    ],
+                    "query": [
+                        {
+			    "key"   : "prof_id",
+			    "value" : "747f4442-9edf-4dfd-96d3-c48894362dc9" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "get Miny profile",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/test/model/profiles/find",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "test",
+                        "model",
+			"profiles",
+			"find"
+                    ],
+                    "query": [
+                        {
+			    "key"   : "prof_id",
+			    "value" : "5d162bcf-148d-4ab3-a343-820fb6bf4ae1" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        },
+        {
+            "name": "get Moe profile",
+            "request": {
+                "url": {
+                    "raw": "{{protocol}}://{{host}}/test/model/profiles/find",
+		    "protocol": "{{protocol}}",
+                    "host": [
+                        "{{host}}"
+                    ],
+                    "path": [
+                        "test",
+                        "model",
+			"profiles",
+			"find"
+                    ],
+                    "query": [
+                        {
+			    "key"   : "prof_id",
+			    "value" : "1e062b9e-6a32-4f6d-96c4-88a939ead816" ,
+			    "equals": true,
+			    "description": ""
+                        }
+                    ],
+                    "variable": []
+                },
+                "method": "GET",
+		"header": [],
+		"body": {
+		    "mode": "raw",
+		    "raw": ""
+		},
+		"description": ""
+            },
+	    "response": []
+        }
+    ]
+}

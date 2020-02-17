@@ -1,0 +1,10 @@
+#!/bin/bash
+######################################################
+# Copy jars to prod dir
+######################################################
+#
+echo "copying jars to prod..." 
+cp lib/qkernel.jar prod/lib/
+cp lib/tpj.jar prod/lib/
+cp lib/mysql.jar prod/lib/
+echo "done" 

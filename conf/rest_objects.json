@@ -1,0 +1,57 @@
+[
+    {
+        "route"     :"/api/jukebox/v1/login",
+        "className" :"service.Tpj",
+	"methodName":"login"
+    },
+    {
+        "route"     :"/api/jukebox/v1/play-next",
+        "className" :"service.Tpj",
+	"methodName":"playNext"
+    },
+    {
+        "route"     :"/api/jukebox/v1/catalog",
+        "className" :"service.Tpj",
+	"methodName":"catalog"
+    },
+    {
+        "route"     :"/api/jukebox/v1/currently-playing",
+        "className" :"service.Tpj",
+	"methodName":"currentlyPlaying"
+    },
+    {
+        "route"     :"/api/jukebox/v1/search-profile",
+        "className" :"service.Tpj",
+	"methodName":"searchProfile"
+    },
+    {
+        "route"     :"/api/jukebox/v1/search-song",
+        "className" :"service.Tpj",
+	"methodName":"searchSong"
+    },
+    {
+        "route"     :"/api/jukebox/v1/upload-catalog",
+        "className" :"service.Tpj",
+	"methodName":"uploadCatalog"
+    },
+    {
+        "route"     :"/api/jukebox/v1/add-queue",
+        "className" :"service.Tpj",
+	"methodName":"addQueue"
+    },
+    {
+        "route"     :"/api/jukebox/v1/faq",
+        "className" :"service.Tpj",
+	"methodName":"faq"
+    },
+    {
+        "route"     :"/api/jukebox/v1/permissions",
+        "className" :"service.Tpj",
+	"methodName":"permissions"
+    },
+    {
+        "route"     :"/api/jukebox/v1/ping",
+        "className" :"service.Tpj",
+	"methodName":"ping"
+    }
+]
