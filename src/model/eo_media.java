@@ -28,41 +28,43 @@ import com.qkernel.*;
 public class eo_media extends eo_media_gen
 {
 
-    /*********************************************************
-     * Returns a Media by userId (it's the jukebox catalog)
+    /*************************************************************
+     * Returns Media objects by userId (it's the jukebox catalog)
      *
-     * @param  $id
-     * @return $medias
-     *********************************************************
+     * @param  int       jukebox id
+     * @return JSONArray list of media objects 
+     *************************************************************
      */
-    public function findByUserId($id)
+    public JSONArray findByUserId(int id)
     {
-        $query="SELECT media.mediaId,".
-                      "media.userId,".
-                      "media.mediaFile,".
-                      "media.mediaSource,".
-                      "media.mediaArtist,".
-                      "media.mediaTitle,".
-                      "media.mediaYear,".
-                      "media.mediaDuration,".
-                      "media.mediaCreated,".
-                      "media.mediaModified,".
-                      "media.mediaStatus ".                      		               
-	       "FROM media, upload ".
-           "WHERE media.mediaStatus='ACTIVE' ".
-             "AND media.userId=upload.userId ".
-             "AND upload.uploadStatus='COMPLETE' ".
-             "AND media.userId=".$id;
+        $query="SELECT media.mediaId,"+
+                      "media.userId,"+
+                      "media.mediaFile,"+
+                      "media.mediaSource,"+
+                      "media.mediaArtist,"+
+                      "media.mediaTitle,"+
+                      "media.mediaYear,"+
+                      "media.mediaDuration,"+
+                      "media.mediaCreated,"+
+                      "media.mediaModified,"+
+                      "media.mediaStatus "+                    		               
+	       "FROM media, upload "+
+           "WHERE media.mediaStatus='ACTIVE' "+
+             "AND media.userId=upload.userId "+
+             "AND upload.uploadStatus='COMPLETE' "+
+             "AND media.userId="+id;
 
-		return(this.executeQueryJSONArray(q,"mapBroadcastList"));	
-
-        return($this->getMedias($this->selectDB($query, "Media")));
+	JSONArray ja = new JSONArray();
+	ja = this.executeQueryJSONArray(query,"mapMediaList");
+        if(ja.length() == 0)
+	    ja = setDefault();
+        return(ja);
     }
 
 
    /**
     *
-    * This function maps an SQL row to a JSONObject for broadcastList
+    * This function maps an SQL row to a JSONObject for Media
     * it is called on each row.
     *
     * @param ResultSet  that contains the record to be mapped
@@ -70,7 +72,7 @@ public class eo_media extends eo_media_gen
     * @return void
     *
     */
-    public void mapBroadcastList(ResultSet rs, ArrayList<JSONObject> al) throws SQLException
+    public void mapMediaList(ResultSet rs, ArrayList<JSONObject> al) throws SQLException
     {
         JSONObject jo  = new JSONObject();
 
@@ -92,12 +94,12 @@ public class eo_media extends eo_media_gen
      * @return $medias
      *********************************************************
      */
-    private function getMedias($medias)
+    private JSONArray setDefault()
     {
-        if(count($medias) == 0)
-        {
-            $medias[0] = new Media();
-            $medias[0]->mediaid     = 0;
+	JSONArray ja    = new JSONArray();
+	vo_media  media = new vo_media();
+	
+        media.mediaid     = 0;
             $medias[0]->mediaFile   = defaultMediaFile();
             $medias[0]->mediaArtist = defaultMediaArtist();
             $medias[0]->mediaTitle  = defaultMediaTitle();
