@@ -4,6 +4,7 @@ package common;
  *
  * History:
  * --------
+ * 02-20-20 mgill  Add bcryptVerify()
  * 02-10-20 mgill  Initial Creation. 
  */
 import java.lang.*;
@@ -12,8 +13,11 @@ import java.io.*;
 import java.text.*;
 import com.qkernel.*;
 import com.qkernel.json.*;
+import com.qkernel.crypto.bcrypt.*;
+import com.qkernel.crypto.bytes.*;
+
 /**
- * {@code SpnSql} 
+ * {@code TpjSql} 
  * <p>
  * Methods:
  * --------
@@ -31,7 +35,7 @@ public class TpjSql extends Object implements TpjConstants
     * @param  void
     * @return String time 
     */
-    public String now()
+    public static String now()
     {
         Date curDate = new Date();
         String TIME_FORMAT   = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -47,12 +51,32 @@ public class TpjSql extends Object implements TpjConstants
     * @param  void
     * @return String UUID
     */
-    public String randomUUID()
+    public static String  randomUUID()
     {
         UUID uuid = UUID.randomUUID();
 	return(uuid.toString());
     }
 
+   /**
+    * verifies a bcrypt string is equal a compared string
+    *
+    * @param  String  str to verify
+    * @param  String  bcrypt str to check against
+    *
+    * @return boolean true= verified
+    *
+    */
+    public static boolean  bcryptVerify(String str, String bcryptStr)
+    {
+	boolean verified = false;
+	
+        BCrypt.Result result = BCrypt.verifyer().verify(str.toCharArray(), bcryptStr);
+        if(result.verified)
+            verified = true;
+	
+        return(verified);
+    }
+    
     public TpjSql()
     { 
 

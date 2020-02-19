@@ -15,8 +15,7 @@ import java.sql.*;
 import java.util.*;
 
 import com.qkernel.*;
-import com.qkernel.crypto.bcrypt.*;
-import com.qkernel.crypto.bytes.*;
+import common.TpjSql;
 
 /************************************************************
  * An entity object for the db table user
@@ -29,27 +28,27 @@ import com.qkernel.crypto.bytes.*;
 public class eo_user extends eo_user_gen
 {
 
-    /*********************************************************
-     * Returns a User for $username and $password
-     *
-     * @param  string $username
-     * @param  string $password 
-     * @return array  $user
-     *********************************************************
-     */
+   /**
+    * Returns a vo_user for username and password
+    *
+    * @param  string  username
+    * @param  string  password 
+    * @return vo_user user
+    *
+    */
     public vo_user findUserLogin(String username, String password)
     {
-	//        String username        = $this->sqlSafe($username);
-
+	username  = SqlSafe.sqlSafe(username);
         String  q = "SELECT * FROM user WHERE userName='"+username+"' AND userStatus = 'ACTIVE'"; 
         vo_user u = executeQueryObject(q);
         if(u != null)
         {
-            BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), u.userPassword);
-            if(!result.verified)
-                u = null;
+	    if(!TpjSql.bcryptVerify(password, u.userPassword))
+		u = null;
         }
         return(u);
     }
+
+
 }
 

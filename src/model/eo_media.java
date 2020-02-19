@@ -15,7 +15,10 @@ import java.sql.*;
 import java.util.*;
 
 import com.qkernel.*;
-
+import com.qkernel.json.*;
+import common.TpjConstants;
+import common.TpjSql;
+import daemon.TpjConfig;
 
 /************************************************************
  * An entity object for the db table media
@@ -25,7 +28,7 @@ import com.qkernel.*;
  * @version $Revision$ 
  ************************************************************
  */
-public class eo_media extends eo_media_gen
+public class eo_media extends eo_media_gen implements TpjConstants
 {
 
     /*************************************************************
@@ -37,7 +40,8 @@ public class eo_media extends eo_media_gen
      */
     public JSONArray findByUserId(int id)
     {
-        $query="SELECT media.mediaId,"+
+        String query=
+         "SELECT media.mediaId,"+
                       "media.userId,"+
                       "media.mediaFile,"+
                       "media.mediaSource,"+
@@ -76,11 +80,17 @@ public class eo_media extends eo_media_gen
     {
         JSONObject jo  = new JSONObject();
 
-        jo.put("channelName"       , rs.getString("chan_name"));
-	jo.put("channelDescription", rs.getString("chan_description"));
-	jo.put("roomId"            , rs.getString("room_id"));
-	jo.put("broadcastId"       , rs.getString("bcast_id"));
-	jo.put("broadcastStartDate", rs.getString("bcast_start_date"));
+        jo.put("mediaId"      , rs.getInt("mediaId"));
+	jo.put("userId"       , rs.getInt("userId"));
+	jo.put("mediaFile"    , rs.getString("mediaFile"));
+	jo.put("mediaSource"  , rs.getString("mediaSource"));
+	jo.put("mediaArtist"  , rs.getString("mediaArtist"));
+	jo.put("mediaTitle"   , rs.getString("mediaTitle"));
+	jo.put("mediaYear"    , rs.getString("mediaYear"));
+	jo.put("mediaDuration", rs.getString("mediaDuration"));
+	jo.put("mediaCreated" , rs.getString("mediaCreated"));
+	jo.put("mediaModified", rs.getString("mediaModified"));
+	jo.put("mediaStatus"  , rs.getString("mediaStatus"));
 
         al.add(jo);
      }
@@ -90,24 +100,48 @@ public class eo_media extends eo_media_gen
      * This function will create a default Media object
      * when the results of a media query count is 0
      *
-     * @param  $medias
-     * @return $medias
+     * @param  n/a
+     * @return JSONArray default object
      *********************************************************
      */
     private JSONArray setDefault()
     {
-	JSONArray ja    = new JSONArray();
-	vo_media  media = new vo_media();
+        TpjConfig config = (TpjConfig)daemon.lookup(CONFIG);
+	JSONArray  ja = new JSONArray();
+        JSONObject jo = new JSONObject();
 	
-        media.mediaid     = 0;
-            $medias[0]->mediaFile   = defaultMediaFile();
-            $medias[0]->mediaArtist = defaultMediaArtist();
-            $medias[0]->mediaTitle  = defaultMediaTitle();
-            $medias[0]->mediaSource = "UPLOAD";            
-            $medias[0]->mediaStatus = "Upload in Progress";
-        }
-        return($medias);
+        jo.put("mediaid", "0");
+        jo.put("mediaFile",   config.defaultMediaFile());
+        jo.put("mediaArtist", config.defaultMediaArtist());
+        jo.put("mediaTitle",  config.defaultMediaTitle());
+        jo.put("mediaSource", "UPLOAD");            
+        jo.put("mediaStatus", "Upload in Progress");
+        ja.put(jo);
+        return(ja);
     }       
-    
-}
 
+
+   /**
+    * executeQueryJSONArray
+    * 
+    * create JSONArray and ArrayList of JSONObjects mapped by 
+    * mapperMethod on query then return the JSONArray.
+    *
+    * @param String query 
+    * @param String mapper method 
+    *
+    * @return JSONArray
+    */
+    @SuppressWarnings({"unchecked"})
+    
+    public JSONArray executeQueryJSONArray(String q, String mapperMethod)
+    {
+	JSONArray ja = new JSONArray();
+	try{
+	ArrayList<JSONObject> al = executeQueryList(q, mapperMethod);
+	al.forEach(jo->ja.put(jo));
+        }
+	catch(Exception e){daemon.log(e);}
+        return(ja);
+    }    
+}

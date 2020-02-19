@@ -126,7 +126,7 @@ public class Tpj extends TpjApiObject implements TpjConstants
 	JSONArray medias = media.findByUserId(jukeboxId);
         if(medias!=null)
 	{
-	repluy.put("catalog", medias);
+	reply.put("catalog", medias);
         statusOK(reply, "Play Next Successful");
         }
 	else
@@ -166,7 +166,7 @@ public class Tpj extends TpjApiObject implements TpjConstants
 	JSONArray medias = media.findByUserId(jukeboxId);
         if(medias!=null)
 	{
-	repluy.put("catalog", medias);
+	reply.put("catalog", medias);
         statusOK(reply, "Catalog Successful");
         }
 	else

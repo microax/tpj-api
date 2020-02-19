@@ -28,24 +28,8 @@ public final class TpjConfig extends Config implements TpjConstants
     public void putROMConfig()
     {
 	super.putROMConfig();
-	
-        putString("defaultMediaFile",  "rock lobster.mp3");
-        putString("defaultMediaArtist","The B-52's");
-        putString("defaultMediaTitle", "Rock Lobster");
     }
 
-    public String defaultMediaFile()
-    {
-	return(getString("defaultMediaFile")); 
-    }
-    public String defaultMediaArtist()
-    {
-        return(getString("defaultMediaArtist")); 	
-    }
-    public String defaultMediaTitle()
-    {
-        return(getString("defaultMediaTitle"));
-    }
     
     //--------------------------------------------------------------------------------
     // METHOD   TpjConfig()
