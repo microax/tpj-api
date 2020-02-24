@@ -1,57 +1,57 @@
 [
     {
         "route"     :"/api/jukebox/v1/login",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"login"
     },
     {
         "route"     :"/api/jukebox/v1/play-next",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"playNext"
     },
     {
         "route"     :"/api/jukebox/v1/catalog",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"catalog"
     },
     {
         "route"     :"/api/jukebox/v1/currently-playing",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"currentlyPlaying"
     },
     {
         "route"     :"/api/jukebox/v1/search-profile",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"searchProfile"
     },
     {
         "route"     :"/api/jukebox/v1/search-song",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"searchSong"
     },
     {
         "route"     :"/api/jukebox/v1/upload-catalog",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"uploadCatalog"
     },
     {
         "route"     :"/api/jukebox/v1/add-queue",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"addQueue"
     },
     {
         "route"     :"/api/jukebox/v1/faq",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"faq"
     },
     {
         "route"     :"/api/jukebox/v1/permissions",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"permissions"
     },
     {
         "route"     :"/api/jukebox/v1/ping",
-        "className" :"service.Tpj",
+        "className" :"service.TpjApi",
 	"methodName":"ping"
     }
 ]

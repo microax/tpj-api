@@ -18,7 +18,7 @@ import daemon.TpjConfig;
 import daemon.TpjContainer;
 import model.*;
 /**
- * {@code Tpj} 
+ * {@code TpjApi} 
  * <p>
  * Methods:
  * --------
@@ -34,7 +34,7 @@ import model.*;
  * permissions()
  *
  */
-public class Tpj extends TpjApiObject implements TpjConstants
+public class TpjApi extends TpjApiObject implements TpjConstants
 {
     //------ Objects in our model ------------------------
     //
@@ -119,19 +119,36 @@ public class Tpj extends TpjApiObject implements TpjConstants
     {
 	JSONObject reply = new JSONObject();
 
-	String username = req.getParam("username");
-	String passcode = req.getParam("passcode");
-	int    jukeboxId= Integer.parseInt(req.getParam("jukeboxId"));
+	String   username = req.getParam("username");
+	String   passcode = req.getParam("passcode");
+	int      jukeboxId= Integer.parseInt(req.getParam("jukeboxId"));
+        vo_media m;
 	
-	JSONArray medias = media.findByUserId(jukeboxId);
-        if(medias!=null)
-	{
-	reply.put("catalog", medias);
-        statusOK(reply, "Play Next Successful");
-        }
+	vo_user  u = user.findByUserPasscode(username, passcode);
+	if(u!= null)
+	{	
+            if(u.userId==jukeboxId)
+		m = media.findNextInQueue(jukeboxId);
+	    else
+		m = media.findCurrentlyPlaying(jukeboxId);
+
+	    if(m.mediaSource.equals("UPLOAD"))
+		m.mediaFile = config.getPlayerUrl(m.mediaFile);
+	    reply.put("mediaId",      m.mediaId);
+	    reply.put("userId",       m.userId);
+	    reply.put("mediaSource",  m.mediaSource);
+	    reply.put("mediaArtist",  m.mediaArtist);
+	    reply.put("mediaTitle",   m.mediaTitle);
+	    reply.put("mediaYear",    m.mediaYear);
+	    reply.put("mediaDuration",m.mediaDuration);
+	    reply.put("mediaCreated", m.mediaCreated);
+	    reply.put("mediaModified",m.mediaModified);
+	    reply.put("mediaStatus",  m.mediaStatus);	    
+	    statusOK(reply, "Play Next Successful");
+	}
 	else
 	{
-        statusFAIL(reply, "Not Found");
+            statusFAIL(reply, "User Not Found");
 	}
 	return(reply);
     }
@@ -176,7 +193,7 @@ public class Tpj extends TpjApiObject implements TpjConstants
 	return(reply);
     }
     
-    public Tpj(Daemon d)
+    public TpjApi(Daemon d)
     { 
 	super(d);
     }
