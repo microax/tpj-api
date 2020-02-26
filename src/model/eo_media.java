@@ -93,11 +93,7 @@ public class eo_media extends eo_media_gen implements TpjConstants
              "AND upload.uploadStatus='COMPLETE' "+
              "AND media.userId="+id;
 
-	JSONArray ja = new JSONArray();
-	ja = this.executeQueryJSONArray(query,"mapMediaList");
-        if(ja.length() == 0)
-	    ja = setDefault();
-        return(ja);
+        return(this.executeQueryObject(query));
     }
 
     /*************************************************************

@@ -8,6 +8,10 @@ JAVAC_OPTS="-nowarn -d classes/ -cp .:..:classes/:lib/qkernel.jar:"$CLASSPATH
 echo "compiling tpj..."
 echo "building common package..." 
 javac $JAVAC_OPTS src/common/*.java
+if [ $? -eq 0 ]; then   
+echo "building model package..." 
+javac $JAVAC_OPTS src/model/*.java
+fi
 if [ $? -eq 0 ]; then
 echo "building daemon package..." 
 javac $JAVAC_OPTS src/daemon/*.java
@@ -16,10 +20,7 @@ if [ $? -eq 0 ]; then
 echo "building util package..." 
 javac $JAVAC_OPTS src/util/*.java
 fi
-if [ $? -eq 0 ]; then   
-echo "building model package..." 
-javac $JAVAC_OPTS src/model/*.java
-fi
+
 #if [ $? -eq 0 ]; then   
 #echo "building rpc package..." 
 #javac $JAVAC_OPTS src/rpc/*.java

@@ -27,7 +27,7 @@ import common.TpjConstants;
  * @version 200223  
  ************************************************************
  */
-public class eo_playlist extends eo_playlist_gen imlements TpjConstants
+public class eo_playlist extends eo_playlist_gen implements TpjConstants
 {
    /**
     * Returns next vo_media in playlist for a jukebox
@@ -40,32 +40,32 @@ public class eo_playlist extends eo_playlist_gen imlements TpjConstants
     {
         ArrayList<vo_playlist> pl      = this.findUserPlayList(id);
         int                    c       = pl.size();
-	vo_playlist            playlist= pl.indexOf(0);
+	vo_playlist[]          playlist= pl.toArray();
 
 	if(c > 1)
         {
-            this.delete(playlist.playlistId);
+            this.delete(playlist[0].playlistId);
             
             for(int i=1; i<c; i++ )
             {
-		pl.indexOf(i-1) = pl.indexOf(i);
-		pl.indexOf(i-1).playlistOrder =i;
+		playlist[i-1] = playlist[i];
+		playlist[i-1].playlistOrder =i;
             }
-            playlist.playlistModified= TpjSql.now();
-            playlist.playlistStatus  = 'PLAYING';
+            playlist[0].playlistModified= TpjSql.now();
+            playlist[0].playlistStatus  = "PLAYING";
             this.updateUserPlaylist(pl);
         }
         else if(c ==1)
         {
             ArrayList<vo_media> medias = this.getJukeboxCatalog(id);
             int rand   = (int)Math.random() * medias.size() -1;
-            playlist.playlistOrder   = 1;
-            playlist.mediaId         = medias.indexOf(rand).mediaId;
-            playlist.userId          = id;
-            playlist.playlistUserId  = id;
-            playlist.playlistModified=TpjSql.now();
-            playlist.playlistStatus  = 'PLAYING';
-            this.update(playlist);   
+            playlist[0].playlistOrder   = 1;
+            playlist[0].mediaId         = medias.indexOf(rand).mediaId;
+            playlist[0].userId          = id;
+            playlist[0].playlistUserId  = id;
+            playlist[0].playlistModified=TpjSql.now();
+            playlist[0].playlistStatus  = "PLAYING";
+            this.update(playlist[0]);   
         }
         else
         {
@@ -77,7 +77,7 @@ public class eo_playlist extends eo_playlist_gen imlements TpjConstants
             playlist.playlistUserId  = id;
             playlist.playlistCreated = TpjSql.now();
             playlist.playlistModified= TpjSql.now();
-            playlist.playlistStatus  = 'PLAYING';
+            playlist.playlistStatus  = "PLAYING";
             this.insert(playlist);
         }
         
@@ -94,7 +94,7 @@ public class eo_playlist extends eo_playlist_gen imlements TpjConstants
     {
         String q="SELECT playlistId,"+
                    "userId,"+
-                   "mediaId,".
+                   "mediaId,"+
                    "playlistUserId,"+
                    "playlistOrder,"+
                    "playlistCreated,"+
@@ -123,37 +123,37 @@ public class eo_playlist extends eo_playlist_gen imlements TpjConstants
         query= " UPDATE playlist SET ";
 
         col = "userId = CASE ";
-        pl.forEach(m)-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.userId+" ";
+        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.userId+" ");
         col+="ELSE userId END, ";
         query+=col; 
         
         col = "mediaId = CASE ";
-        pl.forEach(m)-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.mediaId+" ";
+        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.mediaId+" ");
         col+="ELSE mediaId END, ";
         query+=col; 
 	
         col = "playlistUserId = CASE ";
-        pl.forEach(m)-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistUserId+" ";
+        pl.forEach(m-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistUserId+" ");
         col+="ELSE playlistUserId END, ";
         query+=col;
 	
         col = "playlistStatus = CASE ";
-        pl.forEach(m)-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistStatus+" ";
+        pl.forEach(m-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistStatus+" ");
         col+="ELSE playlistStatus END, ";
         query+=col; 
 	
         col = "playlistOrder = CASE ";
-        pl.forEach(m)-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistOrder+" ";
+        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistOrder+" ");
         col+="ELSE playlistOrder END, ";
         query+=col; 
 	
         col = "playlistModified = CASE ";
-        pl.forEach(m)-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistModified+" ";
+        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistModified+" ");
         col+="ELSE playlistModified END, ";
         query+=col; 
 	
 	where= "WHERE ";
-        pl.forEach(m)-> where+="playlistId="+m.playlistId+" OR ";
+        pl.forEach(m->where+="playlistId="+m.playlistId+" OR ");
         where+="playlistId=0";
         query+=where;
 
@@ -234,9 +234,9 @@ public class eo_playlist extends eo_playlist_gen imlements TpjConstants
         TpjConfig config = (TpjConfig)daemon.lookup(CONFIG);
 	vo_media  media  = new vo_media();
         media.mediaId      =0;
-        media.mediaFile  = config.defaultMediaFile());
-        media.mediaArtist= config.defaultMediaArtist());
-        media.mediaTitle = config.defaultMediaTitle());
+        media.mediaFile  = config.defaultMediaFile();
+        media.mediaArtist= config.defaultMediaArtist();
+        media.mediaTitle = config.defaultMediaTitle();
         media.mediaSource= "UPLOAD";            
         media.mediaStatus= "Upload in Progress";
         return(media);

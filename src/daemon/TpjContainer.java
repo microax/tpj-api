@@ -56,19 +56,19 @@ public class TpjContainer extends EntityContainer
         faq = new eo_faq();
         faq.create(this, "eo_faq");
         faq.load();
-
+	
         media = new eo_media();
         media.create(this, "eo_media");
         media.load();
-
+	
         permission = new eo_permission();
         permission.create(this, "eo_permission");
         permission.load();
 
-        playlist = new eo_playlist();
+	playlist = new eo_playlist();
         playlist.create(this, "eo_playlist");
         playlist.load();
-
+	
         ugroup = new eo_ugroup();
         ugroup.create(this, "eo_ugroup");
         ugroup.load();
@@ -84,7 +84,7 @@ public class TpjContainer extends EntityContainer
         user = new eo_user();
         user.create(this, "eo_user");
         user.load();
-
+	
         user_ugroup = new eo_user_ugroup();
         user_ugroup.create(this, "eo_user_ugroup");
         user_ugroup.load();
