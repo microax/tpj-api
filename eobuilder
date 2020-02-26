@@ -1,0 +1,7 @@
+#!/bin/bash
+######################################################
+# run the EOBuilder
+######################################################
+#
+java -cp .:..:lib/qkernel.jar:lib/mysql.jar com/qkernel/eobuilder/EOBuilder conf/tpj.conf
+javac -nowarn -d classes -cp .:..:lib/qkernel.jar:lib/mysql.jar  src/model/*.java
