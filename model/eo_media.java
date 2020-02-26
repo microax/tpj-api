@@ -73,7 +73,7 @@ public class eo_media extends eo_media_gen implements TpjConstants
      * @return JSONArray list of media objects 
      *************************************************************
      */
-    public JSONArray findNextInQueue(int id)
+    public vo_media findNextInQueue(int id)
     {
         String query=
          "SELECT media.mediaId,"+
@@ -180,7 +180,7 @@ public class eo_media extends eo_media_gen implements TpjConstants
 	JSONArray  ja = new JSONArray();
         JSONObject jo = new JSONObject();
 	
-        jo.put("mediaid", "0");
+        jo.put("mediaId", "0");
         jo.put("mediaFile",   config.defaultMediaFile());
         jo.put("mediaArtist", config.defaultMediaArtist());
         jo.put("mediaTitle",  config.defaultMediaTitle());

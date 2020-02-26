@@ -128,9 +128,9 @@ public class TpjApi extends TpjApiObject implements TpjConstants
 	if(u!= null)
 	{	
             if(u.userId==jukeboxId)
-		m = media.findNextInQueue(jukeboxId);
+		m = playlist.findNextInQueue(jukeboxId);
 	    else
-		m = media.findCurrentlyPlaying(jukeboxId);
+		m = playlist.getCurrentlyPlaying(jukeboxId);
 
 	    if(m.mediaSource.equals("UPLOAD"))
 		m.mediaFile = config.getPlayerUrl(m.mediaFile);

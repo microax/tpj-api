@@ -1,6 +1,0 @@
-#!/bin/bash
-######################################################
-# shutdown process 
-######################################################
-#
-java -cp lib/mysql.jar:lib/mysql.jar:lib/tpj.jar: util/shutdown conf/tpj.conf

@@ -1,6 +1,0 @@
-#!/bin/bash
-######################################################
-# run the tpj service node in foreground 
-######################################################
-#
-java -cp lib/tpj.jar:lib/qkernel.jar:lib/mysql.jar daemon/Tpj conf/tpj.conf
