@@ -32,6 +32,10 @@ public final class TpjConfig extends Config implements TpjConstants
         putString("defaultMediaFile",  "rock lobster.mp3");
         putString("defaultMediaArtist","The B-52's");
         putString("defaultMediaTitle", "Rock Lobster");
+        putString("mp3PlayerUrl",
+		  "http://thepeoplesjukebox.com/mp3player/mp3player.php");
+
+	putInt("songSelectMax", 2);
     }
 
     public String defaultMediaFile()
@@ -45,6 +49,14 @@ public final class TpjConfig extends Config implements TpjConstants
     public String defaultMediaTitle()
     {
         return(getString("defaultMediaTitle"));
+    }
+    public String getPlayerUrl(int id)
+    {
+        return(getString("mp3PlayerUrl")+"?jukeboxId="+id);
+    }
+    public int getSongSelectMax()
+    {
+        return(getInt("songSelectMax"));
     }
     
     //--------------------------------------------------------------------------------

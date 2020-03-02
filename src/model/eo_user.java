@@ -49,6 +49,25 @@ public class eo_user extends eo_user_gen
         return(u);
     }
 
+   /**
+    * Returns a vo_user for username and passcode
+    *
+    * @param  string  username
+    * @param  string  passcode 
+    * @return vo_user user
+    *
+    */
+    public vo_user findByUserPasscode(String username, String passcode)
+    {
+	username  = SqlSafe.sqlSafe(username);
+	passcode  = SqlSafe.sqlSafe(passcode);
+	
+        String  q = "SELECT * FROM user WHERE userName='"+
+	            username+"' AND userPasscode='"+
+	            passcode+"' AND userStatus = 'ACTIVE'";
+	
+        return(executeQueryObject(q));
+    }
 
 }
 

@@ -13,12 +13,15 @@ package model;
 import java.lang.*;
 import java.sql.*;
 import java.util.*;
-import java.lang.Math;
+import java.util.Random;
 
 import com.qkernel.*;
 import common.TpjSql;
 import common.TpjConstants;
+import daemon.TpjContainer;
+import daemon.TpjConfig;
 
+@SuppressWarnings({"unchecked", "fallthrough", "serial" })
 /************************************************************
  * An entity object for the db table playlist
  * 
@@ -38,47 +41,56 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
     */
     public vo_media findNextInQueue(int id)
     {
-        ArrayList<vo_playlist> pl      = this.findUserPlayList(id);
+        ArrayList<vo_playlist> pl      = this.findUserPlaylist(id);
         int                    c       = pl.size();
-	vo_playlist[]          playlist= pl.toArray();
-
+	Object[]               playlist= pl.toArray();
+	vo_playlist            p       = (vo_playlist)playlist[0];
+        vo_playlist            pn      = null;
 	if(c > 1)
         {
-            this.delete(playlist[0].playlistId);
+            this.delete(p.playlistId);
             
             for(int i=1; i<c; i++ )
             {
 		playlist[i-1] = playlist[i];
-		playlist[i-1].playlistOrder =i;
+		pn = (vo_playlist)playlist[i-1];
+		pn.playlistOrder =i;
             }
-            playlist[0].playlistModified= TpjSql.now();
-            playlist[0].playlistStatus  = "PLAYING";
+            p.playlistModified= TpjSql.now();
+            p.playlistStatus  = "PLAYING";
             this.updateUserPlaylist(pl);
         }
         else if(c ==1)
         {
             ArrayList<vo_media> medias = this.getJukeboxCatalog(id);
-            int rand   = (int)Math.random() * medias.size() -1;
-            playlist[0].playlistOrder   = 1;
-            playlist[0].mediaId         = medias.indexOf(rand).mediaId;
-            playlist[0].userId          = id;
-            playlist[0].playlistUserId  = id;
-            playlist[0].playlistModified=TpjSql.now();
-            playlist[0].playlistStatus  = "PLAYING";
-            this.update(playlist[0]);   
+	    Object[]            media  = medias.toArray();
+            Random r = new Random();
+            int rand = r.ints(0, medias.size()).findFirst().getAsInt();
+	    vo_media randomMedia = (vo_media)media[rand];
+	    p.playlistOrder   = 1;
+            p.mediaId         = randomMedia.mediaId;
+            p.userId          = id;
+            p.playlistUserId  = id;
+            p.playlistModified=TpjSql.now();
+            p.playlistStatus  = "PLAYING";
+            this.update(p);   
         }
         else
         {
             ArrayList<vo_media> medias = this.getJukeboxCatalog(id);
-            int rand   = (int)Math.random() * medias.size() -1;	    
-            playlist.playlistOrder   = 1;
-            playlist.mediaId         = medias.indexOf(rand).mediaId;
-            playlist.userId          = id;
-            playlist.playlistUserId  = id;
-            playlist.playlistCreated = TpjSql.now();
-            playlist.playlistModified= TpjSql.now();
-            playlist.playlistStatus  = "PLAYING";
-            this.insert(playlist);
+	    Object[]            media  = medias.toArray();
+            Random r = new Random();
+            int rand = r.ints(0, medias.size()).findFirst().getAsInt();
+	    vo_media randomMedia = (vo_media)media[rand];
+	    p = new vo_playlist();
+            p.playlistOrder   = 1;
+            p.mediaId         = randomMedia.mediaId;
+            p.userId          = id;
+            p.playlistUserId  = id;
+            p.playlistCreated = TpjSql.now();
+            p.playlistModified= TpjSql.now();
+            p.playlistStatus  = "PLAYING";
+            this.insert(p);
         }
         
         return(this.getCurrentlyPlaying(id));
@@ -92,14 +104,7 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
     */
     public ArrayList<vo_playlist> findUserPlaylist(int id)
     {
-        String q="SELECT playlistId,"+
-                   "userId,"+
-                   "mediaId,"+
-                   "playlistUserId,"+
-                   "playlistOrder,"+
-                   "playlistCreated,"+
-                   "playlistModified,"+
-                   "playlistStatus "+                      		               
+        String q="SELECT * "+
 	         "FROM playlist "+
            "WHERE (playlistStatus='QUEUE' OR playlistStatus='PLAYING') "+
            "AND userId="+id+" ORDER by playlistOrder";
@@ -119,47 +124,48 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
 	String query ="";
 	String col   ="";
 	String where ="";
+	Object[] l   = pl.toArray();
 	
         query= " UPDATE playlist SET ";
-
-        col = "userId = CASE ";
-        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.userId+" ");
+	
+	col = "userId = CASE ";
+	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.userId+" ";
         col+="ELSE userId END, ";
         query+=col; 
         
         col = "mediaId = CASE ";
-        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.mediaId+" ");
+	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.mediaId+" ";
         col+="ELSE mediaId END, ";
         query+=col; 
 	
         col = "playlistUserId = CASE ";
-        pl.forEach(m-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistUserId+" ");
+	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistUserId+" ";
         col+="ELSE playlistUserId END, ";
         query+=col;
 	
         col = "playlistStatus = CASE ";
-        pl.forEach(m-> col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistStatus+" ");
+	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistStatus+" ";
         col+="ELSE playlistStatus END, ";
         query+=col; 
 	
         col = "playlistOrder = CASE ";
-        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistOrder+" ");
+	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistOrder+" ";
         col+="ELSE playlistOrder END, ";
         query+=col; 
-	
+
         col = "playlistModified = CASE ";
-        pl.forEach(m->col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistModified+" ");
+	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistModified+" ";
         col+="ELSE playlistModified END, ";
-        query+=col; 
-	
+
 	where= "WHERE ";
-        pl.forEach(m->where+="playlistId="+m.playlistId+" OR ");
+        for(vo_playlist m : (vo_playlist[])l) where+="playlistId="+m.playlistId+" OR ";
         where+="playlistId=0";
         query+=where;
 
         this.executeUpdate(query);
     }
 
+    
    /**
     * Returns a Media by userId (it's the jukebox catalog)
     *
@@ -168,6 +174,9 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
     */
     public ArrayList<vo_media> getJukeboxCatalog(int id)
     {
+	TpjContainer c  = (TpjContainer) entityContainer;
+	eo_media mediaEO= c.media;	
+
         String q="SELECT mediaId,"+
                    "userId,"+
                    "mediaFile,"+
@@ -182,7 +191,7 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
 	         "FROM media "+
 	         "WHERE mediaStatus='ACTIVE' AND userId="+id;
 	
-        return((ArrayList<vo_media>)executeQueryList(q));	
+        return((ArrayList<vo_media>)mediaEO.executeQueryList(q));	
     }
 
 
@@ -196,7 +205,9 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
     */
     public vo_media getCurrentlyPlaying(int id)
     {
-	vo_media media = null;
+	TpjContainer c  = (TpjContainer) entityContainer;
+	eo_media mediaEO= c.media;	
+	vo_media media  = null;
         String   q;	
 
 	q="SELECT media.mediaId,"+
@@ -216,11 +227,12 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
            "AND media.userId=playlist.userId "+
            "AND playlist.userId="+id;
 
-	if((media=(vo_media)executeQueryObject(q))==null)
+	if((media=(vo_media)mediaEO.executeQueryObject(q))==null)
 	    media = this.setDefault();
 	return(media);	
     }
 
+    
    /**
     * This function will create a default Media object
     * when the results of a media query count is 0

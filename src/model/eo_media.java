@@ -61,7 +61,7 @@ public class eo_media extends eo_media_gen implements TpjConstants
 	JSONArray ja = new JSONArray();
 	ja = this.executeQueryJSONArray(query,"mapMediaList");
         if(ja.length() == 0)
-	    ja = setDefault();
+	    ja = setDefaultJSON();
         return(ja);
     }
 
@@ -97,39 +97,38 @@ public class eo_media extends eo_media_gen implements TpjConstants
     }
 
     /*************************************************************
-     * Returns Media objects by userId (it's the jukebox catalog)
+     * Returns currently playing for a jukebox
      *
      * @param  int       jukebox id
-     * @return JSONArray list of media objects 
+     * @return vo_media  media 
      *************************************************************
      */
-    public JSONArray findCurrentlyPlaying(int id)
+    public vo_media findCurrentlyPlaying(int id)
     {
-        String query=
-         "SELECT media.mediaId,"+
-                      "media.userId,"+
-                      "media.mediaFile,"+
-                      "media.mediaSource,"+
-                      "media.mediaArtist,"+
-                      "media.mediaTitle,"+
-                      "media.mediaYear,"+
-                      "media.mediaDuration,"+
-                      "media.mediaCreated,"+
-                      "media.mediaModified,"+
-                      "media.mediaStatus "+                    		               
-	       "FROM media, upload "+
-           "WHERE media.mediaStatus='ACTIVE' "+
-             "AND media.userId=upload.userId "+
-             "AND upload.uploadStatus='COMPLETE' "+
-             "AND media.userId="+id;
+        vo_media m= null;
+        String   q= "";
+	
+	q ="SELECT media.mediaId,"+
+             "media.userId,"+
+             "media.mediaFile,"+
+             "media.mediaSource,"+
+             "media.mediaArtist,"+
+             "media.mediaTitle,"+
+             "media.mediaYear,"+
+             "media.mediaDuration,"+
+             "media.mediaCreated,"+
+             "media.mediaModified,"+
+             "media.mediaStatus "+                      		               
+	   "FROM media, playlist "+
+	   "WHERE playlist.playlistStatus='PLAYING' "+
+           "AND media.mediaId=playlist.mediaId "+
+           "AND media.userId=playlist.userId "+
+           "AND playlist.userId="+id;
 
-	JSONArray ja = new JSONArray();
-	ja = this.executeQueryJSONArray(query,"mapMediaList");
-        if(ja.length() == 0)
-	    ja = setDefault();
-        return(ja);
+        if ((m=this.executeQueryObject(q))==null)
+	    m = setDefault();
+        return(m);
     }
-
 
     
    /**
@@ -170,7 +169,7 @@ public class eo_media extends eo_media_gen implements TpjConstants
      * @return JSONArray default object
      *********************************************************
      */
-    private JSONArray setDefault()
+    private JSONArray setDefaultJSON()
     {
         TpjConfig config = (TpjConfig)daemon.lookup(CONFIG);
 	JSONArray  ja = new JSONArray();
@@ -186,7 +185,27 @@ public class eo_media extends eo_media_gen implements TpjConstants
         return(ja);
     }       
 
-
+   /**
+    * This function will create a default Media object
+    * when the results of a media query count is 0
+    *
+    * @param  n/a
+    * @return vo_media
+    *
+    */
+    private vo_media setDefault()
+    {
+        TpjConfig config = (TpjConfig)daemon.lookup(CONFIG);
+	vo_media  media  = new vo_media();
+        media.mediaId      =0;
+        media.mediaFile  = config.defaultMediaFile();
+        media.mediaArtist= config.defaultMediaArtist();
+        media.mediaTitle = config.defaultMediaTitle();
+        media.mediaSource= "UPLOAD";            
+        media.mediaStatus= "Upload in Progress";
+        return(media);
+    }
+    
    /**
     * executeQueryJSONArray
     * 
