@@ -41,48 +41,54 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
     */
     public vo_media findNextInQueue(int id)
     {
-        ArrayList<vo_playlist> pl      = this.findUserPlaylist(id);
-        int                    c       = pl.size();
-	Object[]               playlist= pl.toArray();
-	vo_playlist            p       = (vo_playlist)playlist[0];
-        vo_playlist            pn      = null;
+        ArrayList<vo_playlist> pl = this.findUserPlaylist(id);
+        int                    c  = pl.size();
+        String                 now= TpjSql.now();
+	
 	if(c > 1)
         {
-            this.delete(p.playlistId);
-            
-            for(int i=1; i<c; i++ )
-            {
-		playlist[i-1] = playlist[i];
-		pn = (vo_playlist)playlist[i-1];
-		pn.playlistOrder =i;
-            }
-            p.playlistModified= TpjSql.now();
-            p.playlistStatus  = "PLAYING";
+            vo_playlist t = null;
+	    
+            this.delete(pl.get(0).playlistId);
+	    //-------------------------
+	    // rotate elements down
+	    //-------------------------
+            for(int i=1; i<c; i++)
+	    {
+		pl.set(i-1, pl.get(i));
+		t = pl.get(i-1);
+		t.playlistOrder = i;
+		pl.set(i-1, t);
+	    }
+            t = pl.get(0);
+            t.playlistModified= now;
+            t.playlistOrder   = 1; 	    
+            t.playlistStatus  = "PLAYING";
+            pl.set(0,t);
             this.updateUserPlaylist(pl);
         }
         else if(c ==1)
         {
             ArrayList<vo_media> medias = this.getJukeboxCatalog(id);
-	    Object[]            media  = medias.toArray();
             Random r = new Random();
             int rand = r.ints(0, medias.size()).findFirst().getAsInt();
-	    vo_media randomMedia = (vo_media)media[rand];
+	    vo_media randomMedia = medias.get(rand);
+            vo_playlist p     = pl.get(0);
 	    p.playlistOrder   = 1;
             p.mediaId         = randomMedia.mediaId;
             p.userId          = id;
             p.playlistUserId  = id;
-            p.playlistModified=TpjSql.now();
+            p.playlistModified= now;
             p.playlistStatus  = "PLAYING";
             this.update(p);   
         }
         else
         {
             ArrayList<vo_media> medias = this.getJukeboxCatalog(id);
-	    Object[]            media  = medias.toArray();
             Random r = new Random();
             int rand = r.ints(0, medias.size()).findFirst().getAsInt();
-	    vo_media randomMedia = (vo_media)media[rand];
-	    p = new vo_playlist();
+	    vo_media randomMedia = medias.get(rand);
+	    vo_playlist     p = new vo_playlist();
             p.playlistOrder   = 1;
             p.mediaId         = randomMedia.mediaId;
             p.userId          = id;
@@ -124,41 +130,41 @@ public class eo_playlist extends eo_playlist_gen implements TpjConstants
 	String query ="";
 	String col   ="";
 	String where ="";
-	Object[] l   = pl.toArray();
 	
         query= " UPDATE playlist SET ";
 	
 	col = "userId = CASE ";
-	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.userId+" ";
+	for(int i=0; i < pl.size(); i++) col+="WHEN playlistId="+pl.get(i).playlistId+" THEN  "+pl.get(i).userId+" ";
         col+="ELSE userId END, ";
         query+=col; 
         
         col = "mediaId = CASE ";
-	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.mediaId+" ";
+	for(int i=0; i < pl.size(); i++) col+="WHEN playlistId="+pl.get(i).playlistId+" THEN  "+pl.get(i).mediaId+" ";
         col+="ELSE mediaId END, ";
         query+=col; 
 	
         col = "playlistUserId = CASE ";
-	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistUserId+" ";
+	for(int i=0; i < pl.size(); i++) col+="WHEN playlistId="+pl.get(i).playlistId+" THEN  "+pl.get(i).playlistUserId+" ";
         col+="ELSE playlistUserId END, ";
         query+=col;
 	
         col = "playlistStatus = CASE ";
-	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistStatus+" ";
+	for(int i=0; i < pl.size(); i++) col+="WHEN playlistId="+pl.get(i).playlistId+" THEN  '"+pl.get(i).playlistStatus+"' ";
         col+="ELSE playlistStatus END, ";
         query+=col; 
 	
         col = "playlistOrder = CASE ";
-	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistOrder+" ";
+	for(int i=0; i < pl.size(); i++) col+="WHEN playlistId="+pl.get(i).playlistId+" THEN  "+pl.get(i).playlistOrder+" ";
         col+="ELSE playlistOrder END, ";
         query+=col; 
 
         col = "playlistModified = CASE ";
-	for(vo_playlist m : (vo_playlist[])l) col+="WHEN playlistId="+m.playlistId+" THEN  "+m.playlistModified+" ";
-        col+="ELSE playlistModified END, ";
-
+	for(int i=0; i < pl.size(); i++) col+="WHEN playlistId="+pl.get(i).playlistId+" THEN  '"+pl.get(i).playlistModified+"' ";
+        col+="ELSE playlistModified END ";
+        query+=col;
+	
 	where= "WHERE ";
-        for(vo_playlist m : (vo_playlist[])l) where+="playlistId="+m.playlistId+" OR ";
+        for(int i=0; i < pl.size(); i++) where+="playlistId="+pl.get(i).playlistId+" OR ";
         where+="playlistId=0";
         query+=where;
 

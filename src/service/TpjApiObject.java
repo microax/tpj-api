@@ -25,6 +25,7 @@ import model.*;
  * statusFAIL()
  * getString()
  * getInt()
+ * parseInt()
  * getJSONArray()
  *
  * Public Methods:
@@ -98,6 +99,7 @@ public class TpjApiObject extends BusinessObject implements TpjConstants
 	return(js);
     }
 
+    
     /**
     * getJSONArray -- returns JSONArray from 
     *                 JSONObject parameter string
@@ -121,6 +123,28 @@ public class TpjApiObject extends BusinessObject implements TpjConstants
 	return(js);
     }
 
+   /**
+    * parseInt -- returns int from Integer.parseInt()
+    *             without throwing exception 
+    *
+    * @param  String    key 
+    * @return int       value
+    */
+    protected int parseInt(String key)
+    {
+	int value =0;
+        try
+	{
+	    value =Integer.parseInt(key);
+	}
+	catch(Exception e)
+	{
+	    value = 0;
+	}
+	return(value);
+    }
+
+    
    /**
     * statusOK -- sets Ok JSON status with message 
     *             and log 

@@ -88,7 +88,7 @@ public class TpjApi extends TpjApiObject implements TpjConstants
 	reply.put("userCreated",   u.userCreated);
 	reply.put("userModified",  u.userModified);	
 	reply.put("userStatus",    u.userStatus);
-        statusOK(reply,           "Login Successful");
+        statusOK(reply,           "Login Successful userId="+u.userId);
         }
 	else
 	{
@@ -121,7 +121,7 @@ public class TpjApi extends TpjApiObject implements TpjConstants
 
 	String   username = req.getParam("username");
 	String   passcode = req.getParam("passcode");
-	int      jukeboxId= Integer.parseInt(req.getParam("jukeboxId"));
+	int      jukeboxId= this.parseInt(req.getParam("jukeboxId"));
         vo_media m;
 	
 	vo_user  u = user.findByUserPasscode(username, passcode);
@@ -145,7 +145,7 @@ public class TpjApi extends TpjApiObject implements TpjConstants
 	    reply.put("mediaCreated", m.mediaCreated);
 	    reply.put("mediaModified",m.mediaModified);	    
 	    reply.put("mediaStatus",  m.mediaStatus);	    
-	    statusOK(reply, "Play Next Successful");
+	    statusOK(reply, "playNext() OK mediaId="+m.mediaId);
 	}
 	else
 	{
@@ -179,13 +179,13 @@ public class TpjApi extends TpjApiObject implements TpjConstants
 
 	String username = req.getParam("username");
 	String passcode = req.getParam("passcode");
-	int    jukeboxId= Integer.parseInt(req.getParam("jukeboxId"));
+	int    jukeboxId= this.parseInt(req.getParam("jukeboxId"));
 	
 	JSONArray medias = media.findByUserId(jukeboxId);
         if(medias!=null)
 	{
 	reply.put("catalog", medias);
-        statusOK(reply, "Catalog Successful");
+        statusOK(reply, "catalog() OK "+medias.length()+" medias found");
         }
 	else
 	{
@@ -221,8 +221,8 @@ public class TpjApi extends TpjApiObject implements TpjConstants
 	//--------------------------------------------------------------
 	String  username = req.getParam("username");
 	String  passcode = req.getParam("passcode");
-	int     jukeboxId= Integer.parseInt(req.getParam("jukeboxId"));
-	int     mediaId  = Integer.parseInt(req.getParam("mediaId"));
+	int     jukeboxId= this.parseInt(req.getParam("jukeboxId"));
+	int     mediaId  = this.parseInt(req.getParam("mediaId"));
 	String  now      = TpjSql.now();
 	int     selectCount= 0;
 	int     numSongs   = 0;
@@ -263,7 +263,7 @@ public class TpjApi extends TpjApiObject implements TpjConstants
                 reply.put("playlistCreated", now);
 		reply.put("playlistModified",now);
 	        reply.put("playlistStatus",  "PLAY_LIMIT");
-                statusFAIL(reply, "Play Limit");
+                statusFAIL(reply, "Play Limit="+selectMax);
 	    }
 	    else
 	    {
@@ -291,7 +291,8 @@ public class TpjApi extends TpjApiObject implements TpjConstants
                 reply.put("playlistCreated", newSong.playlistCreated);
 		reply.put("playlistModified",newSong.playlistModified);
 	        reply.put("playlistStatus",  newSong.playlistStatus);
-                statusOK(reply, "Inserted song on queue");
+                statusOK(reply, "Inserted song on queue mediaId="
+			         +newSong.mediaId+" order="+newSong.playlistOrder);
 	    }
 	}
 	else
